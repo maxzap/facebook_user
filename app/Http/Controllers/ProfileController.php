@@ -116,6 +116,14 @@ class ProfileController extends Controller
 
         }
         $user = $response->getGraphUser();
+        $profile = new Profile();
+        $profile->user_id = $user['id'];
+        $profile->name = $user['name'];
+        if ($profile->save()) {
+          $error = "Hubo un error al crear el post";
+        }
+        $users = $profile->all();
+        dd($users);
         return view('perfil', compact('user', 'errors'));
     }
 }

@@ -22,11 +22,11 @@
       <button type="submit" name="enviar">Buscar</button>
     </form>
     <br><br>
-    <div class="user">
-      @isset($user)
-        Id: <strong>{{ $user['id'] }}</strong>
+    <div class="profile">
+      @isset($profile)
+        Id: <strong>{{ $profile->user_id }}</strong>
         <br>
-        Usuario: <strong>{{ $user['name'] }}</strong>
+        Usuario: <strong>{{ $profile->name }}</strong>
       @endisset
     </div>
   </body>
