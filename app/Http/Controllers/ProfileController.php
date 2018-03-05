@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Facebook\Facebook;
 use App\Profile;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
 use Illuminate\Http\Request;
+
 
 class ProfileController extends Controller
 {
@@ -29,12 +32,13 @@ class ProfileController extends Controller
             $accessToken = $helper->getAccessToken();
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
             // When Graph returns an error
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
+            $errors[] = $e->getMessage();
+            return view('perfil', compact('errors'));
+
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
             // When validation fails or other local issues
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+            $errors[] = $e->getMessage();
+            return view('perfil', compact('errors'));
         }
 
         if (! isset($accessToken)) {
@@ -52,16 +56,16 @@ class ProfileController extends Controller
         }
 
         // Logged in
-        echo '<h3>Access Token</h3>';
-        var_dump($accessToken->getValue());
+        // echo '<h3>Access Token</h3>';
+        // var_dump($accessToken->getValue());
 
         // The OAuth 2.0 client handler helps us manage access tokens
         $oAuth2Client = $fb->getOAuth2Client();
 
         // Get the access token metadata from /debug_token
         $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-        echo '<h3>Metadata</h3>';
-        var_dump($tokenMetadata);
+        // echo '<h3>Metadata</h3>';
+        // var_dump($tokenMetadata);
 
         // Validation (these will throw FacebookSDKException's when they fail)
       $tokenMetadata->validateAppId('1533137420137387'); // Replace {app-id} with your app id
@@ -83,33 +87,35 @@ class ProfileController extends Controller
         }
 
         $_SESSION['fb_access_token'] = (string) $accessToken;
-        return redirect()->route('detalle_perfil');
+        return view('perfil');
+        // return redirect()->route('detalle_perfil');
         // User is logged in with a long-lived access token.
         // You can redirect them to a members-only page.
         //header('Location: https://example.com/members.php');
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
-
         session_start();
-
+        $id = $request->input('id');
         $fb = new Facebook;
 
         try {
             // Returns a `Facebook\FacebookResponse` object
-            $response = $fb->get('/me?fields=id,name', $_SESSION['fb_access_token']);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+            $response = $fb->get('/' . $id, $_SESSION['fb_access_token']);
+
+        } catch (FacebookResponseException $e) {
+
+            $errors[] = $e->getMessage();
+            return view('perfil', compact('errors'));
+
+        } catch (FacebookSDKException $e) {
+
+          $errors[] = $e->getMessage();
+          return view('perfil', compact('errors'));
+
         }
         $user = $response->getGraphUser();
-
-        echo 'Name: ' . $user['name'];
-        // OR
-        // echo 'Name: ' . $user->getName();
+        return view('perfil', compact('user', 'errors'));
     }
 }

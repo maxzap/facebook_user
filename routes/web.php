@@ -13,4 +13,4 @@
 
 Route::get('login', 'ProfileController@login')->name('login_fb');
 Route::get('portal', 'ProfileController@index')->name('portal_perfil');
-Route::get('perfil', 'ProfileController@profile')->name('detalle_perfil');
+Route::post('perfil', 'ProfileController@profile')->name('detalle_perfil');
