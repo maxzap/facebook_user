@@ -22,12 +22,16 @@
       <button type="submit" name="enviar">Buscar</button>
     </form>
     <br><br>
-    <div class="profile">
-      @isset($profile)
-        Id: <strong>{{ $profile->user_id }}</strong>
-        <br>
-        Usuario: <strong>{{ $profile->name }}</strong>
-      @endisset
+    <div class="users">
+      @if(count($users)>0)
+    	<p>
+    		<ul>
+    			@foreach($users as $user)
+    				<li style="color:red">{{ $user }}</li>
+    			@endforeach
+    		</ul>
+    	</p>
+    	@endif
     </div>
   </body>
 </html>

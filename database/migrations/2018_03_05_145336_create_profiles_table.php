@@ -16,6 +16,7 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->softDeletes();
             $table->integer('user_id')->unsigned();
             $table->string('name')->nullable();
             $table->engine = 'InnoDB';

@@ -123,7 +123,6 @@ class ProfileController extends Controller
           $error = "Hubo un error al crear el post";
         }
         $users = $profile->all();
-        dd($users);
-        return view('perfil', compact('user', 'errors'));
+        return view('perfil', compact('user', 'errors', 'users'));
     }
 }
