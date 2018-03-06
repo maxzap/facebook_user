@@ -23,15 +23,15 @@
     </form>
     <br><br>
     <div class="users">
-      @if(count($users)>0)
-    	<p>
-    		<ul>
-    			@foreach($users as $user)
-    				<li style="color:red">{{ $user }}</li>
-    			@endforeach
-    		</ul>
-    	</p>
-    	@endif
+      @isset($users)
+        <p>
+          <ul>
+            @foreach($users as $user)
+              <li style="color:green">{{ "Nombre: " . $user->name }} {{ " Id: " . $user->user_id }}</li>
+            @endforeach
+          </ul>
+        </p>
+      @endisset
     </div>
   </body>
 </html>
