@@ -115,15 +115,18 @@ class ProfileController extends Controller
           return view('perfil', compact('errors'));
 
         }
+
         $user = $response->getGraphUser();
         $profile = new Profile();
         $profile->user_id = $user['id'];
         $profile->first_name = $user['first_name'];
         $profile->last_name = $user['last_name'];
         if ($profile->save()) {
-          $error = "Hubo un error al crear el post";
+          $error = "Hubo un error al guardar el perfil en la base de datos";
         }
+        //Obtengo todos los perfiles creados
         $users = $profile->all();
-        return view('perfil', compact('user', 'errors', 'users'));
+
+        return view('perfil', compact('errors', 'users'));
     }
 }
