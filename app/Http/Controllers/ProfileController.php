@@ -102,7 +102,7 @@ class ProfileController extends Controller
 
         try {
             // Returns a `Facebook\FacebookResponse` object
-            $response = $fb->get('/' . $id, $_SESSION['fb_access_token']);
+            $response = $fb->get('/' . $id . '?fields=first_name,last_name', $_SESSION['fb_access_token']);
 
         } catch (FacebookResponseException $e) {
 
@@ -118,7 +118,8 @@ class ProfileController extends Controller
         $user = $response->getGraphUser();
         $profile = new Profile();
         $profile->user_id = $user['id'];
-        $profile->name = $user['name'];
+        $profile->first_name = $user['first_name'];
+        $profile->last_name = $user['last_name'];
         if ($profile->save()) {
           $error = "Hubo un error al crear el post";
         }

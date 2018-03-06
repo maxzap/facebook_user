@@ -18,7 +18,8 @@ class CreateProfilesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('name')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';

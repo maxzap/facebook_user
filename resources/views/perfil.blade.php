@@ -27,7 +27,7 @@
         <p>
           <ul>
             @foreach($users as $user)
-              <li style="color:green">{{ "Nombre: " . $user->name }} {{ " Id: " . $user->user_id }}</li>
+              <li style="color:green">{{ "Apellido: " . $user->last_name }} {{ " - Nombre: " . $user->first_name }} {{ " / Id: " . $user->user_id }}</li>
             @endforeach
           </ul>
         </p>
